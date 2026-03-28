@@ -1,0 +1,12 @@
+GET http://localhost:8082/products HTTP/1.1
+
+###
+
+POST http://localhost:8082/products HTTP/1.1
+Content-Type: application/json
+
+{
+    "productName": "teste1",
+    "category": "tt",
+    "price": 12.0
+}

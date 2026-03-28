@@ -1,0 +1,28 @@
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: springboot-test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: matheusfbio
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: test-db
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U matheusfbio"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
+
+volumes:
+  postgres_data:
