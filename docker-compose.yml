@@ -1,18 +1,22 @@
 services:
 
+  # PostgreSQL database service
   postgres:
-    image: postgres:latest
-    container_name: springboot-test
+    image: postgres:16
+    container_name: springboot-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: matheusfbio
       POSTGRES_PASSWORD: 12345
       POSTGRES_DB: test-db
     ports:
+      # Maps host port 5436 to container port 5432
       - "5436:5432"
     volumes:
+      # Persists database data across container restarts
       - postgres_data:/var/lib/postgresql
     healthcheck:
+      # Checks if postgres is ready to accept connections
       test: ["CMD-SHELL", "pg_isready -U matheusfbio"]
       interval: 10s
       timeout: 5s
@@ -20,9 +24,31 @@ services:
     networks:
       - appnet
 
+  # Spring Boot application service
+  app:
+    build: .
+    container_name: springboot-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        # Waits for postgres healthcheck to pass before starting
+        condition: service_healthy
+    environment:
+      # Overrides application.properties to use the postgres service name as host
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/test-db
+      SPRING_DATASOURCE_USERNAME: matheusfbio
+      SPRING_DATASOURCE_PASSWORD: 12345
+    ports:
+      # Exposes the Spring Boot app on host port 8082
+      - "8082:8082"
+    networks:
+      - appnet
+
 networks:
+  # Shared bridge network for container communication
   appnet:
     driver: bridge
 
 volumes:
+  # Named volume for postgres data persistence
   postgres_data:

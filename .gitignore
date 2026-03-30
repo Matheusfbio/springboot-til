@@ -1,4 +1,5 @@
 HELP.md
+q-dev-chat-2026-03-28.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
