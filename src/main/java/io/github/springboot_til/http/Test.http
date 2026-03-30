@@ -6,7 +6,24 @@ POST http://localhost:8082/products HTTP/1.1
 Content-Type: application/json
 
 {
-    "productName": "teste1",
+    "productName": "teste122",
     "category": "tt",
-    "price": 12.0
+    "price": 22.0
 }
+
+###
+GET http://localhost:8082/products/e9226545-649b-4b13-9176-82a943ea9eb5 HTTP/1.1
+
+###
+
+PATCH  http://localhost:8082/products/a2205469-e730-4bd5-a28b-8a373d232fbd HTTP/1.1
+Content-Type: application/json
+
+{
+  "productName": "Iphone 14 Pro Max",
+  "category": "Smartphone",
+  "price": 999.0
+}
+
+###
+DELETE  http://localhost:8082/products/81eb45b1-f2db-41d1-b0d5-daf3d315ca4c HTTP/1.1
